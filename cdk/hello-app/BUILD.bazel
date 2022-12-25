@@ -1,0 +1,45 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
+load("@contrib_rules_cdk//cdk:defs.bzl", "cdk_assembly", "cdk_deploy", "cdk_destroy", "cdk_diff")
+
+js_library(
+    name = "lib",
+    srcs = [
+        "app.js",
+        "//:node_modules/@aws-cdk/aws-apigatewayv2-alpha",
+        "//:node_modules/@aws-cdk/aws-apigatewayv2-integrations-alpha",
+        "//:node_modules/aws-cdk-lib",
+    ],
+    data = [
+        "//go/hello-app:lambda",
+        "//java/hello-app:hello-app_deploy.jar",
+    ],
+)
+
+js_binary(
+    name = "bin",
+    data = [
+        ":lib",
+    ],
+    entry_point = "app.js",
+)
+
+cdk_assembly(
+    name = "assembly",
+    app = ":bin",
+    visibility = ["//visibility:public"],
+)
+
+cdk_diff(
+    name = "diff",
+    assembly = ":assembly",
+)
+
+cdk_deploy(
+    name = "deploy",
+    assembly = ":assembly",
+)
+
+cdk_destroy(
+    name = "destroy",
+    assembly = ":assembly",
+)

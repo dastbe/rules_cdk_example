@@ -1,0 +1,28 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@contrib_rules_cdk//cdk:defs.bzl", "cdk_bootstrap")
+
+# gazelle:prefix github.com/dastbe/rules_cdk_example
+gazelle(
+    name = "gazelle",
+    args = [
+        "-go_naming_convention=go_default_library",
+    ],
+    command = "update",
+)
+
+gazelle(
+    name = "gazelle-update-repos",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=deps.bzl%go_dependencies",
+        "-prune",
+    ],
+    command = "update-repos",
+)
+
+npm_link_all_packages(
+    name = "node_modules",
+)
+
+cdk_bootstrap(name = "cdk_bootstrap")

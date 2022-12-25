@@ -1,0 +1,32 @@
+load("@rules_pkg//:pkg.bzl", "pkg_zip")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/dastbe/rules_cdk_example/go/hello-app",
+    visibility = ["//visibility:private"],
+    deps = ["@com_github_aws_aws_lambda_go//lambda:go_default_library"],
+)
+
+go_binary(
+    name = "hello-app",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "hello-app-x86_64_linux",
+    embed = [":go_default_library"],
+    goarch = "amd64",
+    goos = "linux",
+)
+
+pkg_zip(
+    name = "lambda",
+    srcs = [
+        ":hello-app-x86_64_linux",
+    ],
+    strip_prefix = "./hello-app-x86_64_linux_",
+    visibility = ["//visibility:public"],
+)

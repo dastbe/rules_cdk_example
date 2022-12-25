@@ -1,0 +1,19 @@
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")
+
+java_library(
+    name = "java_default_library",
+    srcs = [
+        "src/main/java/hello/Handler.java",
+    ],
+    deps = [
+        "@maven//:com_amazonaws_aws_lambda_java_core",
+    ],
+)
+
+java_binary(
+    name = "hello-app",
+    runtime_deps = [
+        ":java_default_library",
+    ],
+    visibility = ["//visibility:public"],
+)
