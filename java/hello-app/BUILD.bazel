@@ -12,8 +12,8 @@ java_library(
 
 java_binary(
     name = "hello-app",
+    visibility = ["//visibility:public"],
     runtime_deps = [
         ":java_default_library",
     ],
-    visibility = ["//visibility:public"],
 )

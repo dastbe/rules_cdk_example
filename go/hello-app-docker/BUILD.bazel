@@ -1,0 +1,27 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/dastbe/rules_cdk_example/go/hello-app-docker",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "hello-app-docker",
+    embed = [":go_default_library"],
+)
+
+go_binary(
+    name = "hello-app-docker-x86_64_linux",
+    embed = [":go_default_library"],
+    goarch = "amd64",
+    goos = "linux",
+)
+
+go_image(
+    name = "image",
+    binary = ":hello-app-docker-x86_64_linux",
+    visibility = ["//visibility:public"],
+)

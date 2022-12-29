@@ -36,7 +36,7 @@ bazel run //cdk/hello-app:deploy
 
 Which will build the go and java programs as well as the CDK cloud assembly,
 then start deployment. It will prompt you to setup some IAM permissions that
-handle authorizing API gateway to invoke your lambas.
+handle authorizing API gateway to invoke your lambdas and apprunner services.
 
 After the stack is deployed, you should see something like the following
 
@@ -47,8 +47,9 @@ HelloStack.HttpApiEndpoint = https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.
 
 In a browser you can query the following URLs
 
-* `https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/go`
-* `https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/java`
+* `https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/go\_lambda
+* `https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/java\_lambda`
+* `https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/java\_image
 
 To invoke the respective handlers
 

@@ -4,9 +4,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "contrib_rules_cdk",
-    sha256 = "ee400cd17dcd233b3350731cc3e84f91bf312a53769f7db7b00d7c52d898eb37",
-    strip_prefix = "rules_cdk-0.3.0",
-    url = "https://github.com/dastbe/rules_cdk/archive/refs/tags/v0.3.0.tar.gz",
+    sha256 = "893cb0ba9ac5cf6cf0381355c702fbba481a78bf673a6aeda58ba0545dfb5699",
+    strip_prefix = "rules_cdk-0.4.0",
+    url = "https://github.com/dastbe/rules_cdk/archive/refs/tags/v0.4.0.tar.gz",
 )
 
 http_archive(
@@ -34,7 +34,6 @@ http_archive(
     ],
 )
 
-
 http_archive(
     name = "aspect_rules_js",
     sha256 = "66ecc9f56300dd63fb86f11cfa1e8affcaa42d5300e2746dba08541916e913fd",
@@ -51,8 +50,11 @@ http_archive(
     ],
 )
 
-RULES_JVM_EXTERNAL_TAG = "4.5"
-RULES_JVM_EXTERNAL_SHA ="b17d7388feb9bfa7f2fa09031b32707df529f26c91ab9e5d909eb1676badd9a6"
+http_archive(
+    name = "io_bazel_rules_docker",
+    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
+)
 
 http_archive(
     name = "rules_jvm_external",
@@ -158,3 +160,19 @@ load("//:deps.bzl", "go_dependencies")
 go_dependencies()
 
 gazelle_dependencies()
+
+
+######################
+# rules_docker setup #
+######################
+
+load("@io_bazel_rules_docker//repositories:repositories.bzl", container_repositories = "repositories")
+container_repositories()
+
+load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
+
+container_deps()
+
+load("@io_bazel_rules_docker//go:image.bzl", go_image_repos = "repositories")
+
+go_image_repos()
